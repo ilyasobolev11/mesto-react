@@ -13,37 +13,34 @@ class Api {
     return Promise.reject(new Error(`Ошибка ${textErr}: ${res.status} - ${res.statusText}`));
   }
 
-  getUserData(path) {
-    return fetch(`${this._url}${path}`, {
+  getUserData() {
+    return fetch(`${this._url}/users/me`, {
       headers: this._token
     })
       .then((res) => this._getResponseBody(res, 'getUserData'));
   }
 
-  getInitialCards(path) {
-    return fetch(`${this._url}${path}`, {
+  getInitialCards() {
+    return fetch(`${this._url}/cards`, {
       headers: this._token
     })
       .then((res) => this._getResponseBody(res, 'getInitialCards'));
   }
 
-  updateUserData({userName, status}, path) {
-    return fetch(`${this._url}${path}`, {
+  updateUserData(userData) {
+    return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
         ...this._token,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        name: userName,
-        about: status
-      })
+      body: JSON.stringify(userData)
     })
       .then((res) => this._getResponseBody(res, 'updateUserData'));
   }
 
-  updateAvatar(avatar, path) {
-    return fetch(`${this._url}${path}`, {
+  updateAvatar(avatar) {
+    return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
         ...this._token,
@@ -54,8 +51,8 @@ class Api {
       .then((res) => this._getResponseBody(res, 'updateAvatar'));
   }
 
-  sendNewCard(cardData, path) {
-    return fetch(`${this._url}${path}`, {
+  addCard(cardData) {
+    return fetch(`${this._url}/cards`, {
       method: 'POST',
       headers: {
         ...this._token,
@@ -66,28 +63,20 @@ class Api {
       .then((res) => this._getResponseBody(res, 'sendNewCard'));
   }
 
-  deleteCard(path) {
-    return fetch(`${this._url}${path}`, {
+  deleteCard(cardId) {
+    return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._token
     })
       .then((res) => this._getResponseBody(res, 'deleteCard'))
   }
 
-  putLike(path) {
-    return fetch(`${this._url}${path}`, {
-      method: 'PUT',
+  changeLikeCardStatus(cardId, likeStatus) {
+    return fetch(`${this._url}/cards/likes/${cardId}`, {
+      method: likeStatus ? 'PUT' : 'DELETE',
       headers: this._token
     })
-      .then((res) => this._getResponseBody(res, 'putLike'))
-  }
-
-  removeLike(path) {
-    return fetch(`${this._url}${path}`, {
-      method: 'DELETE',
-      headers: this._token
-    })
-      .then((res) => this._getResponseBody(res, 'removeLike'))
+      .then((res) => this._getResponseBody(res, 'changeLikeCardStatus'))
   }
 }
 

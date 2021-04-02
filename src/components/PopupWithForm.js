@@ -1,10 +1,16 @@
-import React from  'react';
+// import React, { useState } from  'react';
 
 function PopupWithForm(props) {
+  // const [isValid, setIsValid] = useState(false);
 
   function handlePopupOverlayClick(evt) {
     if (evt.target.classList.contains('popup')) props.onClose();
   }
+
+  // function validateForm(evt) {
+  //   setIsValid(evt.currentTarget.checkValidity());
+  //   console.log(isValid);
+  // }
 
   return (
     <div
@@ -13,7 +19,13 @@ function PopupWithForm(props) {
     >
       <div className="popup__form-container">
         <h2 className="popup__title">{props.title}</h2>
-        <form className="popup__form" name={props.name} noValidate>
+        <form
+          className="popup__form"
+          name={props.name}
+          // onChange={validateForm}
+          onSubmit={props.onSubmit}
+          noValidate
+        >
           {props.children}
         </form>
         <button

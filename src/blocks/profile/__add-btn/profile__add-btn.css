@@ -20,7 +20,7 @@
 
 .profile__add-btn:focus {
   outline: none;
-  box-shadow: 0 0 10px #FFF;
+  /* box-shadow: 0 0 10px #FFF; */
 }
 
 @media screen and (max-width: 768px) {

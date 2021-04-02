@@ -1,29 +1,11 @@
 import React from 'react';
-import api from '../utils/api.js';
 import Card from './Card.js';
+import Spinner from './Spinner.js';
 import userAvatarPlaceholder from '../images/avatar.jpg';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-function Main(props) {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [userAvatar, setUserAvatar] = React.useState(userAvatarPlaceholder);
-  const [userName, setUserName] = React.useState('Жак-Ив Кусто');
-  const [userDescription, setUserDescription] = React.useState('Исследователь океана');
-  const [cards, setCards] = React.useState([]);
-
-  React.useEffect(() => {
-    Promise.all([
-      api.getUserData('/users/me'),
-      api.getInitialCards('/cards')
-    ])
-      .then(([{name, about, avatar, _id}, initialCards]) => {
-        setUserAvatar(avatar);
-        setUserName(name);
-        setUserDescription(about);
-        setCards([...initialCards]);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
-  }, []);
+function Main({isLoading, cards, onEditAvatar, onEditProfile, onAddPlace, ...props}) {
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <main className="content root__content">
@@ -32,41 +14,45 @@ function Main(props) {
         <div className="profile__user-data">
           <div className="profile__cover"
             tabIndex={0}
-            onClick={props.onEditAvatar}
+            onClick={onEditAvatar}
           >
-            <img src={userAvatar} alt="аватар пользователя" className="profile__avatar" />
+            <img src={currentUser?.avatar || userAvatarPlaceholder} alt="аватар пользователя" className="profile__avatar" />
           </div>
           <div className="profile__column">
             <div className="profile__row">
-              <h1 className="profile__user-name">{userName}</h1>
+              <h1 className="profile__user-name">{currentUser?.name || 'Жак-Ив Кусто'}</h1>
               <button
                 className="profile__edit-btn"
                 type="button"
                 aria-label="Изменить данные пользовтеля"
-                onClick={props.onEditProfile}
+                onClick={onEditProfile}
               />
             </div>
-            <p className="profile__user-status">{userDescription}</p>
+            <p className="profile__user-status">{currentUser?.about || 'Исследователь океана'}</p>
           </div>
         </div>
         <button
           className="profile__add-btn"
           type="button"
           aria-label="Добавить место"
-          onClick={props.onAddPlace}
+          onClick={onAddPlace}
         />
       </section>
 
       <section className="elements">
         {
           isLoading ? (
-              <div className="elements__spinner">
-                <span />
-              </div>
+              <Spinner />
             ) :
             cards.length ? (
               <ul className="elements__list">
-                {cards.map(card => <Card key={card._id} card={card} onCardClick={props.onCardClick} />)}
+                {cards.map(card => (
+                  <Card
+                    key={card._id}
+                    card={card}
+                    {...props}
+                  />
+                ))}
               </ul>
             ) : (
               <p className="elements__text-notification">Нет добавленных мест</p>

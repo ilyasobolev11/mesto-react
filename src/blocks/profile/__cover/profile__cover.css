@@ -22,7 +22,7 @@
 
 .profile__cover:focus {
   outline: none;
-  box-shadow: 0 0 10px #FFF;
+  /* box-shadow: 0 0 10px #FFF; */
 }
 
 .profile__cover:hover::before {

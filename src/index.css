@@ -26,6 +26,7 @@
 @import url(./blocks/elements/__list/elements__list.css);
 @import url(./blocks/elements/__item/elements__item.css);
 @import url(./blocks/elements/__delete-btn/elements__delete-btn.css);
+@import url(./blocks/elements/__delete-btn/_visible/elements__delete-btn_visible.css);
 @import url(./blocks/elements/__item-img/elements__item-img.css);
 @import url(./blocks/elements/__row/elements__row.css);
 @import url(./blocks/elements/__item-title/elements__item-title.css);

@@ -23,7 +23,7 @@
 
 .popup__submit-btn:focus {
   outline: none;
-  box-shadow: 0 0 10px #000;
+  /* box-shadow: 0 0 10px #000; */
 }
 
 @media screen and (max-width: 450px) {

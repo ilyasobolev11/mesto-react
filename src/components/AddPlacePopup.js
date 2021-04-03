@@ -1,46 +1,12 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import PopupWithForm from "./PopupWithForm";
-
-// function useValidation(evt, initialValid) {
-//   const [valuesObj, setValuesObj] = useState({});
-//   const [valid, setValid] = useState(initialValid);
-//   const [validMessagesObj, setValidMessagesObj] = useState({});
-
-//   useEffect(() => {
-//     setValuesObj(state => state[evt.target.name] = evt.target.value);
-//     setValidMessagesObj(state => state[evt.target.name] = evt.target.validationMessage);
-
-//   }, [evt]);
-
-//   return {valuesObj, valid, validMessagesObj};
-// }
+import useValidation from '../hooks/useValidation.js';
 
 function AddPlacePopup({onAddPlaceSubmit,...props}) {
-  const [name, setName] = useState({value: '', valid: false, validationMessage: ''});
-  const [link, setLink] = useState({value: '', valid: false, validationMessage: ''});
-  const isValid = name.valid && link.valid;
-
-  // const [event, setEvent] = useState();
-  // const {valuesObj, valid, validMessagesObj} = useValidation(event, false);
-  // function handleChange(evt) {
-  //   setEvent(evt);
-  // }
-
-  function handleNameChange(evt) {
-    setName({
-      value: evt.target.value,
-      valid: evt.target.validity.valid,
-      validationMessage: evt.target.validationMessage
-    });
-  }
-
-  function handleLinkChange(evt) {
-    setLink({
-      value: evt.target.value,
-      valid: evt.target.validity.valid,
-      validationMessage: evt.target.validationMessage
-    });
-  }
+  // const [name, nameValid] = useValidation('', props.isOpen);
+  // const [link, linkValid] = useValidation('', props.isOpen);
+  // const isValid = nameValid.valid && linkValid;
+  const {name, link, formValid, onChange} = useValidation({name: '', link: ''}, props.isOpen);
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -49,13 +15,6 @@ function AddPlacePopup({onAddPlaceSubmit,...props}) {
       link: link.value
     })
   }
-
-  useEffect(() => {
-    if (props.isOpen) {
-      setName({value: '', valid: false, validationMessage: ''});
-      setLink({value: '', valid: false, validationMessage: ''});
-    }
-  }, [props.isOpen]);
 
   return (
     <PopupWithForm
@@ -74,11 +33,12 @@ function AddPlacePopup({onAddPlaceSubmit,...props}) {
           minLength={2}
           maxLength={30}
           value={name.value}
-          onChange={handleNameChange}
+          onChange={onChange}
           required
+          // {...name}
         />
         <span className="popup__input-error" id="placeName-input-error">
-          {name.validationMessage}
+          {name.validMessage}{/* {nameValid.validMessage} */}
         </span>
       </label>
       <label className="popup__field">
@@ -89,14 +49,16 @@ function AddPlacePopup({onAddPlaceSubmit,...props}) {
           type="url"
           placeholder="Ссылка на картинку"
           value={link.value}
-          onChange={handleLinkChange}
+          onChange={onChange}
           required
+          // {...link}
         />
         <span className="popup__input-error" id="imgLink-input-error">
-          {link.validationMessage}
+          {link.validMessage}{/* {linkValid.validMessage}{ */}
         </span>
       </label>
-      <button className={`popup__submit-btn ${!isValid && 'popup__submit-btn_disabled'}`} type="submit" disabled={!isValid}>Создать</button>
+      {/* <button className={`popup__submit-btn ${!isValid && 'popup__submit-btn_disabled'}`} type="submit" disabled={!isValid}>Создать</button> */}
+      <button className={`popup__submit-btn ${!formValid && 'popup__submit-btn_disabled'}`} type="submit" disabled={!formValid}>Создать</button>
     </PopupWithForm>
   );
 }

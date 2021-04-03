@@ -1,10 +1,30 @@
 import { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
+// function useValidation(evt, initialValid) {
+//   const [valuesObj, setValuesObj] = useState({});
+//   const [valid, setValid] = useState(initialValid);
+//   const [validMessagesObj, setValidMessagesObj] = useState({});
+
+//   useEffect(() => {
+//     setValuesObj(state => state[evt.target.name] = evt.target.value);
+//     setValidMessagesObj(state => state[evt.target.name] = evt.target.validationMessage);
+
+//   }, [evt]);
+
+//   return {valuesObj, valid, validMessagesObj};
+// }
+
 function AddPlacePopup({onAddPlaceSubmit,...props}) {
   const [name, setName] = useState({value: '', valid: false, validationMessage: ''});
   const [link, setLink] = useState({value: '', valid: false, validationMessage: ''});
   const isValid = name.valid && link.valid;
+
+  // const [event, setEvent] = useState();
+  // const {valuesObj, valid, validMessagesObj} = useValidation(event, false);
+  // function handleChange(evt) {
+  //   setEvent(evt);
+  // }
 
   function handleNameChange(evt) {
     setName({

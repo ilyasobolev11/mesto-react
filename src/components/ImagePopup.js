@@ -1,16 +1,15 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 function ImagePopup({card, onClose}) {
-
-  const targetCard = React.useRef(null);// или через state реализовать?
-
-  if (card) {
-    targetCard.current = card;
-  }
+  const [targetCard, setTargetCard] = useState(null);
 
   function handlePopupOverlayClick(evt) {
     if (evt.target.classList.contains('popup')) onClose();
   }
+
+  useEffect(() => {
+    if (card) setTargetCard(card);
+  }, [card]);
 
   return (
     <div
@@ -18,8 +17,8 @@ function ImagePopup({card, onClose}) {
       onClick={handlePopupOverlayClick}
     >
       <div className="popup__img-container">
-        <img className="popup__img" src={targetCard.current?.link} alt={targetCard.current?.name} />
-        <p className="popup__img-caption">{targetCard.current?.name}</p>
+        <img className="popup__img" src={targetCard?.link} alt={targetCard?.name} />
+        <p className="popup__img-caption">{targetCard?.name}</p>
         <button
           className="popup__close-btn"
           type="button"

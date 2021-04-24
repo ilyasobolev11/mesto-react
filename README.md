@@ -1,4 +1,4 @@
-Проектная 10: Mesto React
+# Проектная 10: Mesto React
 
 **GitHub Pages:** [Ссылка на страницу проекта](https://ilyasobolev11.github.io/mesto-react/)
 
